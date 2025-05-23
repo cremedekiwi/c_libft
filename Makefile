@@ -1,67 +1,71 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jarumuga <jarumuga@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/05/22 16:48:53 by jarumuga          #+#    #+#              #
-#    Updated: 2024/05/30 19:37:20 by jarumuga         ###   ########.fr        #
+#                                                         :::      ::::::::   #
+#    Makefile                                           :+:      :+:    :+:   #
+#                                                     +:+ +:+         +:+     #
+#    By: jarumuga <jarumuga@student.42.fr>          +#+  +:+       +#+        #
+#                                                 +#+#+#+#+#+   +#+           #
+#    Created: 2024/05/22 16:48:53 by jarumuga          #+#    #+#             #
+#    Updated: 2024/05/30 19:37:20 by jarumuga         ###   ########.fr       #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRC = ft_atoi.c \
-      ft_bzero.c \
-      ft_calloc.c \
-      ft_isalnum.c \
-      ft_isalpha.c \
-      ft_isascii.c \
-      ft_isdigit.c \
-      ft_isprint.c \
-      ft_itoa.c \
-      ft_memchr.c \
-      ft_memcmp.c \
-      ft_memcpy.c \
-      ft_memmove.c \
-      ft_memset.c \
-      ft_putchar_fd.c \
-      ft_putendl_fd.c \
-      ft_putnbr_fd.c \
-      ft_putstr_fd.c \
-      ft_split.c \
-      ft_strchr.c \
-      ft_strdup.c \
-      ft_striteri.c \
-      ft_strjoin.c \
-      ft_strlcat.c \
-      ft_strlcpy.c \
-      ft_strlen.c \
-      ft_strmapi.c \
-      ft_strncmp.c \
-      ft_strnstr.c \
-      ft_strrchr.c \
-      ft_strtrim.c \
-      ft_substr.c \
-      ft_tolower.c \
-      ft_toupper.c
 
-BONUS_SRC = ft_lstnew.c \
-            ft_lstadd_front.c \
-            ft_lstsize.c \
-            ft_lstlast.c \
-            ft_lstadd_back.c \
-            ft_lstdelone.c \
-            ft_lstclear.c \
-            ft_lstiter.c \
-            ft_lstmap.c
+SRCDIR = src
 
-OBJ = $(SRC:.c=.o)
-BONUS_OBJ = $(BONUS_SRC:.c=.o)
+SRC = $(SRCDIR)/ft_atoi.c \
+	$(SRCDIR)/ft_bzero.c \
+	$(SRCDIR)/ft_calloc.c \
+	$(SRCDIR)/ft_isalnum.c \
+	$(SRCDIR)/ft_isalpha.c \
+	$(SRCDIR)/ft_isascii.c \
+	$(SRCDIR)/ft_isdigit.c \
+	$(SRCDIR)/ft_isprint.c \
+	$(SRCDIR)/ft_itoa.c \
+	$(SRCDIR)/ft_memchr.c \
+	$(SRCDIR)/ft_memcmp.c \
+	$(SRCDIR)/ft_memcpy.c \
+	$(SRCDIR)/ft_memmove.c \
+	$(SRCDIR)/ft_memset.c \
+	$(SRCDIR)/ft_putchar_fd.c \
+	$(SRCDIR)/ft_putendl_fd.c \
+	$(SRCDIR)/ft_putnbr_fd.c \
+	$(SRCDIR)/ft_putstr_fd.c \
+	$(SRCDIR)/ft_split.c \
+	$(SRCDIR)/ft_strchr.c \
+	$(SRCDIR)/ft_strdup.c \
+	$(SRCDIR)/ft_striteri.c \
+	$(SRCDIR)/ft_strjoin.c \
+	$(SRCDIR)/ft_strlcat.c \
+	$(SRCDIR)/ft_strlcpy.c \
+	$(SRCDIR)/ft_strlen.c \
+	$(SRCDIR)/ft_strmapi.c \
+	$(SRCDIR)/ft_strncmp.c \
+	$(SRCDIR)/ft_strnstr.c \
+	$(SRCDIR)/ft_strrchr.c \
+	$(SRCDIR)/ft_strtrim.c \
+	$(SRCDIR)/ft_substr.c \
+	$(SRCDIR)/ft_tolower.c \
+	$(SRCDIR)/ft_toupper.c
+
+BONUS_SRC = $(SRCDIR)/ft_lstnew.c \
+	$(SRCDIR)/ft_lstadd_front.c \
+	$(SRCDIR)/ft_lstsize.c \
+	$(SRCDIR)/ft_lstlast.c \
+	$(SRCDIR)/ft_lstadd_back.c \
+	$(SRCDIR)/ft_lstdelone.c \
+	$(SRCDIR)/ft_lstclear.c \
+	$(SRCDIR)/ft_lstiter.c \
+	$(SRCDIR)/ft_lstmap.c
+
+OBJDIR = obj
+OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRC:.c=.o)))
+BONUS_OBJ = $(addprefix $(OBJDIR)/, $(notdir $(BONUS_SRC:.c=.o)))
 NAME = libft.a
 
-all : $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJ)
 	ar rcs $(NAME) $(OBJ)
@@ -69,15 +73,18 @@ $(NAME): $(OBJ)
 bonus: $(OBJ) $(BONUS_OBJ)
 	ar rcs $(NAME) $(OBJ) $(BONUS_OBJ)
 
-%.o: %.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean :
-	rm -f $(OBJ) $(BONUS_OBJ)
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
-fclean : clean
+clean:
+	rm -rf $(OBJDIR)
+
+fclean: clean
 	rm -f $(NAME)
 
-re : fclean all
+re: fclean all
 
 .PHONY: all clean fclean re bonus
